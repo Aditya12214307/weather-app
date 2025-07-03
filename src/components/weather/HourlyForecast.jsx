@@ -1,7 +1,7 @@
 import WeatherIcon from "./WeatherIcon";
 
 export default function HourlyForecast({ forecast }) {
-  const hourly = forecast.list.slice(0, 8); // 24 hrs at 3-hour intervals
+  const hourly = forecast.list.slice(0, 8);
 
   return (
     <div className="bg-card p-6 rounded-xl mt-6">

@@ -6,13 +6,11 @@ import Forecast from "./pages/Forecast";
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-dark-900 text-white">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/weather" element={<Weather />} />
-          <Route path="/forecast" element={<Forecast />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/weather" element={<Weather />} />
+        <Route path="/forecast" element={<Forecast />} />
+      </Routes>
     </BrowserRouter>
   );
 }

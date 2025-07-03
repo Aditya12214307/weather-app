@@ -4,7 +4,7 @@ import Button from "../components/common/Button";
 import CurrentWeather from "../components/weather/CurrentWeather";
 import useWeather from "../hooks/useWeather";
 
-const API_KEY = "f88e755f398a8552e99e3c9d0d21cfd9"; // Replace with your OpenWeatherMap API key
+const API_KEY = "f88e755f398a8552e99e3c9d0d21cfd9";
 
 export default function Weather() {
   const [location, setLocation] = useState("");
@@ -12,6 +12,7 @@ export default function Weather() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!location.trim()) return;
     fetchWeather(location);
   };
 
@@ -28,13 +29,11 @@ export default function Weather() {
         const res = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
         );
-
-        if (!res.ok)
-          throw new Error("Failed to fetch current location weather");
+        if (!res.ok) throw new Error("Failed to fetch current location weather");
 
         const data = await res.json();
-        setLocation(data.name); // sets input box value
-        fetchWeather(data.name); // triggers full fetchWeather flow
+        setLocation(data.name);
+        fetchWeather(data.name);
       } catch (err) {
         console.error("Geolocation fetch error:", err);
         alert("Failed to fetch weather from location.");
@@ -44,6 +43,10 @@ export default function Weather() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 space-y-6">
+      <h2 className="text-2xl font-bold text-white mb-4 text-center">
+        🌦️ Check Current Weather
+      </h2>
+
       <form onSubmit={handleSubmit} className="flex gap-2 flex-wrap">
         <Input
           type="text"
@@ -60,13 +63,13 @@ export default function Weather() {
       </form>
 
       {history.length > 0 && (
-        <div className="flex gap-2 flex-wrap text-sm text-gray-300">
-          <p className="mr-2 text-gray-400">Recent:</p>
+        <div className="text-sm text-gray-300 flex flex-wrap items-center gap-2 mt-2">
+          <span className="text-gray-400 mr-2">Recent Searches:</span>
           {history.map((city, idx) => (
             <button
               key={idx}
               onClick={() => fetchWeather(city)}
-              className="hover:text-primary underline"
+              className="underline hover:text-blue-400 transition duration-200"
             >
               {city}
             </button>
@@ -74,7 +77,10 @@ export default function Weather() {
         </div>
       )}
 
-      {error && <p className="text-red-400">{error}</p>}
+      {error && (
+        <p className="text-red-400 text-center font-medium">{error}</p>
+      )}
+
       {weather && <CurrentWeather weather={weather} />}
     </div>
   );

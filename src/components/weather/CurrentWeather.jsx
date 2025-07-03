@@ -1,6 +1,16 @@
 import WeatherIcon from "./WeatherIcon";
 import StatCard from "./StatCard";
-import { FaCalendarAlt, FaMapMarkerAlt, FaWind, FaTemperatureLow, FaEye, FaTachometerAlt, FaSun, FaMoon, FaSmog } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaWind,
+  FaTemperatureLow,
+  FaEye,
+  FaTachometerAlt,
+  FaSun,
+  FaMoon,
+  FaSmog,
+} from "react-icons/fa";
 
 export default function CurrentWeather({ weather }) {
   if (!weather) return null;
@@ -8,7 +18,7 @@ export default function CurrentWeather({ weather }) {
   const date = new Date(weather.dt * 1000);
   const sunrise = new Date(weather.sys.sunrise * 1000);
   const sunset = new Date(weather.sys.sunset * 1000);
-  const aqi = weather.air?.main?.aqi || 0;
+  const aqi = weather.air?.main?.aqi || 3;
 
   const aqiMap = {
     1: { label: "Good", color: "text-green-400" },
@@ -30,10 +40,12 @@ export default function CurrentWeather({ weather }) {
 
       <div className="flex items-center justify-between text-sm text-gray-400">
         <div className="flex items-center gap-2">
-          <FaCalendarAlt /> {date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}
+          <FaCalendarAlt />
+          {date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}
         </div>
         <div className="flex items-center gap-2">
-          <FaMapMarkerAlt /> {weather.name}, {weather.sys.country}
+          <FaMapMarkerAlt />
+          {weather.name}, {weather.sys.country}
         </div>
       </div>
 
@@ -43,12 +55,21 @@ export default function CurrentWeather({ weather }) {
         <StatCard title="Pressure" value={`${weather.main.pressure} hPa`} icon={<FaTachometerAlt />} />
         <StatCard title="Visibility" value={`${weather.visibility / 1000} km`} icon={<FaEye />} />
         <StatCard title="Wind" value={`${weather.wind.speed} m/s`} icon={<FaWind />} />
-        <StatCard title="Sunrise" value={sunrise.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} icon={<FaSun />} />
-        <StatCard title="Sunset" value={sunset.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} icon={<FaMoon />} />
+        <StatCard
+          title="Sunrise"
+          value={sunrise.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          icon={<FaSun />}
+        />
+        <StatCard
+          title="Sunset"
+          value={sunset.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          icon={<FaMoon />}
+        />
         <StatCard
           title="AQI"
           value={aqiMap[aqi]?.label || "N/A"}
           icon={<FaSmog />}
+          className={aqiMap[aqi]?.color}
         />
       </div>
     </div>
